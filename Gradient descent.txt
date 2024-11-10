@@ -1,0 +1,44 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = 2  # Starting point
+lr = 0.01  # Learning rate
+precision = 0.00001  # Desired precision
+prev_step_size = 1  # Initial step size (just a high initial value)
+max_iter = 10000  # Maximum number of iterations
+iters = 0  # Iteration counter
+
+gf = lambda x: 2 * (x + 3)
+gd = []  # To store x values from gradient descent steps
+
+while precision < prev_step_size and iters < max_iter:
+    previous = x
+    x = x - lr * gf(previous)
+    prev_step_size = abs(x - previous)
+    iters += 1
+    gd.append(x)
+
+print('Local minimum found at:', x)
+
+print('local minima ', x)
+
+x_vals = np.linspace(-10, 5, 100)  # Values for plotting
+y_vals = (x_vals + 3) ** 2  # Function f(x) = (x+3)^2
+y_grad = [gf(i) for i in gd]  # Values of the derivative at each gd poin
+
+plt.figure(figsize=(12, 6))
+plt.plot(x_vals, y_vals, label='f(x) = (x + 3)^2', color='blue')
+
+# Plot gradient descent steps
+plt.scatter(gd, [(i + 3) ** 2 for i in gd], color='red', marker='o', label='Gradient Descent Steps')
+
+# Plot derivative function
+plt.plot(gd, y_grad, color='green', linestyle='--', label="Derivative f'(x) = 2*(x + 3)")
+
+# Annotations and labels
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Gradient Descent on f(x) = (x + 3)^2')
+plt.legend()
+plt.grid(True)
+plt.show()
